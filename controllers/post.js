@@ -36,7 +36,14 @@ class PostController {
     }
 
     static async createPost(req, res) {
+        const file = req.file
+        console.log(file)
+        if(!file){
+            return res.status(400).json({ message: `No image selected` })
+        }
         try {
+            const imgSrc = 'http://localhost:3001/images/' + req.file.filename
+            req.body.image = imgSrc
             const newPost = await Post.create(req.body)
             res.status(201).json({
                 message: 'Post created successfully',
@@ -50,8 +57,7 @@ class PostController {
 
     static async getAllPosts(req, res) {
         try {
-            const post = await Post.findAll()
-            if (!post.length) return res.status(404).json({ message: "No post found" })
+            const post = await Post.findAll() // En caso de que no existan post, nos devolvera un array vacio
             res.status(200).json(post)
         } catch (error) {
             console.log(error)

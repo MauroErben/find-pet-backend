@@ -5,9 +5,11 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 const cors = require('cors')
 
+app.use(express.static('public'))
+
 app.use(cors())
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/', require('./Routes/post'))
